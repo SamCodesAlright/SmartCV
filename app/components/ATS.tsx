@@ -2,7 +2,8 @@ import { cn } from "~/lib/utils";
 
 interface ATSProps {
   score: number;
-  suggestions: Tip[]; // ✅ use shared Tip type so it matches Feedback structure
+  // using shared Tip type so it matches Feedback structure
+  suggestions: Tip[];
 }
 
 const ATS = ({ score, suggestions }: ATSProps) => {
@@ -13,8 +14,8 @@ const ATS = ({ score, suggestions }: ATSProps) => {
         score > 69
           ? "from-green-100"
           : score > 49
-          ? "from-yellow-100"
-          : "from-red-100"
+            ? "from-yellow-100"
+            : "from-red-100"
       )}
     >
       <div className="flex flex-row gap-4 items-center">
@@ -23,8 +24,8 @@ const ATS = ({ score, suggestions }: ATSProps) => {
             score > 69
               ? "/icons/ats-good.svg"
               : score > 49
-              ? "/icons/ats-warning.svg"
-              : "/icons/ats-bad.svg"
+                ? "/icons/ats-warning.svg"
+                : "/icons/ats-bad.svg"
           }
           alt="ATS"
           className="w-10 h-10"
@@ -41,7 +42,7 @@ const ATS = ({ score, suggestions }: ATSProps) => {
           performed:
         </p>
 
-        {/* ✅ Defensive null guard */}
+        {/* Defensive null guard */}
         {(suggestions ?? []).map((suggestion, index) => (
           <div className="flex flex-row gap-2 items-center" key={index}>
             <img
@@ -58,8 +59,8 @@ const ATS = ({ score, suggestions }: ATSProps) => {
         ))}
 
         <p className="text-lg text-gray-500">
-          Want a better score? Improve your resume by applying the
-          suggestions listed above.
+          Want a better score? Improve your resume by applying the suggestions
+          listed above.
         </p>
       </div>
     </div>

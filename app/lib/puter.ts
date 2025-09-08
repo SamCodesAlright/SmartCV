@@ -83,7 +83,8 @@ interface PuterStore {
       image: string | File | Blob,
       testMode?: boolean
     ) => Promise<string | undefined>;
-      // ✅ Add Gemini method here
+      
+    // Added Gemini Resume Analyze method 
       analyzeResume: (
         resumePath: string,
         jobTitle: string,
@@ -365,7 +366,7 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     ) as Promise<AIResponse | undefined>;
   };
 
-  // ✅ New Gemini integration
+  // New Gemini integration
   const analyzeResume = async (
     resumePath: string,
     jobTitle: string,
@@ -393,13 +394,13 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       const result = await model.generateContent(prompt);
       let output = result.response.text() ?? "";
   
-      // ✅ Clean fences or extra prose before parsing
+      // Clean fences or extra prose before parsing
       output = output
         .replace(/```/g, "")
         .replace(/```/g, "")
         .trim();
   
-      // ✅ Extract only JSON substring (from first { to last })
+      // Extract only JSON substring (from first { to last })
       const jsonStart = output.indexOf("{");
       const jsonEnd = output.lastIndexOf("}");
       if (jsonStart === -1 || jsonEnd === -1) {
@@ -509,7 +510,7 @@ export const usePuterStore = create<PuterStore>((set, get) => {
         resumePath: string,
         jobTitle: string,
         jobDescription: string
-      ) => analyzeResume(resumePath, jobTitle, jobDescription), // ✅ NEW Gemini method
+      ) => analyzeResume(resumePath, jobTitle, jobDescription), // Gemini method
     },
     kv: {
       get: (key: string) => getKV(key),
