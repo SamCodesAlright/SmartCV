@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { data, Link, useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import ATS from "~/components/ATS";
 import Details from "~/components/Details";
 import Summary from "~/components/Summary";
@@ -52,14 +52,14 @@ const Resume = () => {
 
         // Image blob
         const imageData = await fs.read(data.imagePath);
-
         if (!imageData) return;
 
-        const imageBlob = new Blob([imageData], { type: "image/png" }); // adjust if jpeg
+        const imageBlob = new Blob([imageData], { type: "image/png" }); // adjust type if jpeg
         const imageUrl = URL.createObjectURL(imageBlob);
         setImageUrl(imageUrl);
 
-        setFeedback(data.feedback);
+        // ✅ Ensure type safety
+        setFeedback(data.feedback as Feedback);
       } catch (err) {
         console.error("Error in loadResume:", err);
       }
@@ -99,8 +99,8 @@ const Resume = () => {
             <div className="flex flex-col gap-8 animate-in fade-in duration-1000">
               <Summary feedback={feedback} />
               <ATS
-                score={feedback.ATS.score || 0}
-                suggestions={feedback.ATS.tips || []}
+                score={feedback.ATS?.score ?? 0}
+                suggestions={feedback.ATS?.tips ?? []}
               />
               <Details feedback={feedback} />
             </div>

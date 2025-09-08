@@ -1,4 +1,3 @@
-import { prepareInstructions } from "~/../constants";
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router";
 import FileUploader from "~/components/FileUploader";
@@ -6,9 +5,10 @@ import Navbar from "~/components/Navbar";
 import { convertPdfToImage } from "~/lib/pdf2img";
 import { usePuterStore } from "~/lib/puter";
 import { generateUUID } from "~/lib/utils";
+import { validateFeedback } from "~/lib/validateFeedback";
 
 const upload = () => {
-  const { auth, fs, isLoading, ai, kv } = usePuterStore();
+  const { fs, ai, kv } = usePuterStore();
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
   const [statusText, setStatusText] = useState("");
@@ -36,20 +36,18 @@ const upload = () => {
     const uploadedFile = await fs.upload([file]);
 
     if (!uploadedFile) return setStatusText("Error: Failed to upload file");
-    setStatusText("Converting to image...");
 
+    setStatusText("Converting to image...");
     const imageFile = await convertPdfToImage(file);
-    if (!imageFile.file)
-      return setStatusText("Error: Failed to convert PDF to image");
+    if (!imageFile.file) return setStatusText("Error: Failed to convert PDF to image");
 
     setStatusText("Uploading the image...");
-
     const uploadedImage = await fs.upload([imageFile.file]);
     if (!uploadedImage) return setStatusText("Error: Failed to upload image");
 
     setStatusText("Preparing data...");
-
     const uuid = generateUUID();
+
     const data = {
       id: uuid,
       resumePath: uploadedFile.path,
@@ -57,37 +55,35 @@ const upload = () => {
       companyName,
       jobTitle,
       jobDescription,
-      feedback: "",
+      feedback: "" as string | Feedback,
     };
     await kv.set(`resume:${uuid}`, JSON.stringify(data));
 
-    setStatusText("Analyzing...");
+    setStatusText("Analyzing with Gemini AI...");
 
-    const feedback = await ai.feedback(
-      uploadedFile.path,
-      prepareInstructions({ jobTitle, jobDescription })
-    );
+    // ✅ Switched to new Gemini integration in puter.ts
+    const feedback = await ai.analyzeResume(uploadedFile.path, jobTitle, jobDescription);
 
-    if (!feedback) return setStatusText("Error: Failed to analyze resume");
+    if (!feedback) {
+      setStatusText("Error: Failed to analyze resume");
+      setIsProcessing(false);
+      return;
+    }
 
-    const feedbackText =
-      typeof feedback.message.content === "string"
-        ? feedback.message.content
-        : feedback.message.content[0].text;
+    // data.feedback = feedback;
+    data.feedback = validateFeedback(feedback);
 
-    data.feedback = JSON.parse(feedbackText);
     await kv.set(`resume:${uuid}`, JSON.stringify(data));
+    console.log("Analysis result:", data);
+
     setStatusText("Analysis completed! Redirecting...");
     setIsProcessing(false);
-    console.log(data);
-
     navigate(`/resume/${uuid}`);
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // const form = e.currentTarget.closest("form");
-    const form = e.currentTarget;
+    const form = e.currentTarget.closest("form");
     if (!form) return;
     const formData = new FormData(form);
     const companyName = formData.get("company-name") as string;

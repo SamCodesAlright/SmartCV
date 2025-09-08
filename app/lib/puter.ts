@@ -1,4 +1,7 @@
 import { create } from "zustand";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { prepareInstructions } from "~/../constants";
+
 
 declare global {
   interface Window {
@@ -80,6 +83,12 @@ interface PuterStore {
       image: string | File | Blob,
       testMode?: boolean
     ) => Promise<string | undefined>;
+      // ✅ Add Gemini method here
+      analyzeResume: (
+        resumePath: string,
+        jobTitle: string,
+        jobDescription: string
+      ) => Promise<Feedback | undefined>;
   };
   kv: {
     get: (key: string) => Promise<string | null | undefined>;
@@ -350,9 +359,64 @@ export const usePuterStore = create<PuterStore>((set, get) => {
           ],
         },
       ],
-      { model: "claude-3-7-sonnet" }
+      {
+        model: "claude-3-7-sonnet",
+      }
     ) as Promise<AIResponse | undefined>;
   };
+
+  // ✅ New Gemini integration
+  const analyzeResume = async (
+    resumePath: string,
+    jobTitle: string,
+    jobDescription: string
+  ): Promise<Feedback | undefined> => {
+    try {
+      const puter = getPuter();
+      if (!puter) {
+        setError("Puter.js not available");
+        return;
+      }
+  
+      const blob = await puter.fs.read(resumePath);
+      if (!blob) throw new Error("Failed to read resume file");
+      const resumeText = await blob.text();
+  
+      const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY!);
+      const model = genAI.getGenerativeModel({ model: "models/gemini-2.5-flash" });
+  
+      const prompt = prepareInstructions({ jobTitle, jobDescription }) + `
+      Resume:
+      ${resumeText}
+      `;
+  
+      const result = await model.generateContent(prompt);
+      let output = result.response.text() ?? "";
+  
+      // ✅ Clean fences or extra prose before parsing
+      output = output
+        .replace(/```/g, "")
+        .replace(/```/g, "")
+        .trim();
+  
+      // ✅ Extract only JSON substring (from first { to last })
+      const jsonStart = output.indexOf("{");
+      const jsonEnd = output.lastIndexOf("}");
+      if (jsonStart === -1 || jsonEnd === -1) {
+        throw new Error("Gemini did not return valid JSON");
+      }
+  
+      const cleanJson = output.substring(jsonStart, jsonEnd + 1);
+  
+      return JSON.parse(cleanJson) as Feedback;
+    } catch (err) {
+      console.error("Gemini Analysis Failed:", err);
+      setError("Gemini resume analysis error");
+      return;
+    }
+  };
+  
+  
 
   const img2txt = async (image: string | File | Blob, testMode?: boolean) => {
     const puter = getPuter();
@@ -441,6 +505,11 @@ export const usePuterStore = create<PuterStore>((set, get) => {
       feedback: (path: string, message: string) => feedback(path, message),
       img2txt: (image: string | File | Blob, testMode?: boolean) =>
         img2txt(image, testMode),
+      analyzeResume: (
+        resumePath: string,
+        jobTitle: string,
+        jobDescription: string
+      ) => analyzeResume(resumePath, jobTitle, jobDescription), // ✅ NEW Gemini method
     },
     kv: {
       get: (key: string) => getKV(key),
@@ -453,4 +522,5 @@ export const usePuterStore = create<PuterStore>((set, get) => {
     init,
     clearError: () => set({ error: null }),
   };
+
 });

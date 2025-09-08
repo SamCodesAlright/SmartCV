@@ -135,6 +135,7 @@ export const AIResponseFormat = `
       };
     }`;
 
+
 export const prepareInstructions = ({
   jobTitle,
   jobDescription,
