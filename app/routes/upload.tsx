@@ -39,7 +39,8 @@ const upload = () => {
 
     setStatusText("Converting to image...");
     const imageFile = await convertPdfToImage(file);
-    if (!imageFile.file) return setStatusText("Error: Failed to convert PDF to image");
+    if (!imageFile.file)
+      return setStatusText("Error: Failed to convert PDF to image");
 
     setStatusText("Uploading the image...");
     const uploadedImage = await fs.upload([imageFile.file]);
@@ -61,8 +62,12 @@ const upload = () => {
 
     setStatusText("Analyzing with Gemini AI...");
 
-    // ✅ Switched to new Gemini integration in puter.ts
-    const feedback = await ai.analyzeResume(uploadedFile.path, jobTitle, jobDescription);
+    // Switched to new Gemini integration in puter.ts
+    const feedback = await ai.analyzeResume(
+      uploadedFile.path,
+      jobTitle,
+      jobDescription
+    );
 
     if (!feedback) {
       setStatusText("Error: Failed to analyze resume");
@@ -98,8 +103,11 @@ const upload = () => {
     <main className="bg-[url('/images/bg-auth.svg')] bg-cover">
       <Navbar />
       <section className="main-section">
-        <div className="page-heading py-16">
-          <h1>Smart Feedback for your dream job</h1>
+        <div className="page-heading py-6">
+          <h1>
+            Upload. Analyze. Improve. <br />
+            Get Hired.
+          </h1>
           {isProcessing ? (
             <>
               <h2>{statusText}</h2>

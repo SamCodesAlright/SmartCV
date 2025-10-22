@@ -58,7 +58,7 @@ const Resume = () => {
         const imageUrl = URL.createObjectURL(imageBlob);
         setImageUrl(imageUrl);
 
-        // ✅ Ensure type safety
+        // Ensure type safety
         setFeedback(data.feedback as Feedback);
       } catch (err) {
         console.error("Error in loadResume:", err);

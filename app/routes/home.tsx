@@ -55,15 +55,15 @@ export default function home() {
     <main className="bg-[url('/images/bg-main.svg')] bg-cover">
       <Navbar />
       <section className="main-section">
-        <div className="page-heading py-16">
-          <h1>Track Your Applications and Resume Ratings</h1>
+        <div className="page-heading py-6">
+          <h1>Smart Feedback for Your Smarter Resumes.</h1>
           {!loadingResume && resumes.length === 0 ? (
             <h2>
               No resumes found. Upload a resume to start tracking your job
               applications.
             </h2>
           ) : (
-            <h2>Review you submissions and check AI-Powered Feedback</h2>
+            <h2>Optimize your resume for any role with AI-driven precision.</h2>
           )}
         </div>
 
