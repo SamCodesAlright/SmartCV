@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { prepareInstructions } from "~/../constants";
 
-
 declare global {
   interface Window {
     puter: {
