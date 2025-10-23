@@ -61,11 +61,8 @@ http://localhost:5173
 
 ## 📝 How to use the SmartCV application?
 
-- Click “Upload Resume” or drag and drop your resume.  
-- Enter the Company Name, Job Title and Job Description. 
-- Get your resume score and AI-generated suggestions.
-- Tailors suggestions based on **job title and job description**.  
-- Make edits to your resume and re-upload to check improvements.
-
-git clone https://github.com/YOUR_GITHUB_USERNAME/SmartCV.git
-cd SmartCV
+1. Click “Upload Resume” or drag and drop your resume.  
+2. Enter the Company Name, Job Title and Job Description. 
+3. Get your resume score and AI-generated suggestions.
+4. Tailors suggestions based on **job title and job description**.  
+5. Make edits to your resume and re-upload to check improvements.
