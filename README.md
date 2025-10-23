@@ -1,91 +1,71 @@
-<<<<<<< HEAD
-# SmartCV
-=======
-# Welcome to React Router!
+# SmartCV – AI-Powered Resume Enhancer
 
-A modern, production-ready template for building full-stack React applications using React Router.
+SmartCV is an interactive web application that helps users **upgrade their resumes** effortlessly. Users can upload resumes in pdf format, and the application uses **Google Gemini** AI to analyze them, provide a score, and give actionable feedback to improve resumes based on the **job title and description**.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+---
 
-## Features
+## 🌐 Live Demo
+You can try the application here: [SmartCV on Netlify](https://aismartcv.netlify.app/)
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+---
 
-## Getting Started
+## 🚀 Features
 
-### Installation
+- Upload resumes in **PDF** format.  
+- Converts uploaded resumes to text/images for AI analysis.  
+- Provides **AI-powered resume score** and improvement suggestions.  
+- Tailors suggestions based on **job title and job description**.  
+- Highlights missing skills, keywords, and formatting improvements.  
+- User-friendly, clean, and fast interface.  
 
-Install the dependencies:
+---
+
+## 🛠 Tech Stack
+
+- **Frontend:** React, TypeScript, React Router DOM  
+- **Styling:** Tailwind CSS (or your preferred styling framework)  
+- **AI Integration:** Google Gemini API
+- **User Authentication:** Puter
+- **Cloud Storage:** Puter
+- **Hosting:** Netlify  
+- **File Handling:** Client-side upload + conversion  
+
+---
+
+## 📂 Installation & Running Locally
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/SamCodesAlright/SmartCV.git
+cd SmartCV
+```
+
+2. Install dependencies:
 
 ```bash
 npm install
 ```
 
-### Development
-
-Start the development server with HMR:
+3. Run the development server:
 
 ```bash
 npm run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
-
-## Building for Production
-
-Create a production build:
+4. Open your browser at:
 
 ```bash
-npm run build
+http://localhost:5173
 ```
 
-## Deployment
+## 📝 How to use the SmartCV application?
 
-### Docker Deployment
+- Click “Upload Resume” or drag and drop your resume.  
+- Enter the Company Name, Job Title and Job Description. 
+- Get your resume score and AI-generated suggestions.
+- Tailors suggestions based on **job title and job description**.  
+- Make edits to your resume and re-upload to check improvements.
 
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
->>>>>>> e36fb9f (Initial commit from create-react-router)
+git clone https://github.com/YOUR_GITHUB_USERNAME/SmartCV.git
+cd SmartCV
