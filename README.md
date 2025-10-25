@@ -1,4 +1,4 @@
-# SmartCV – AI-Powered Resume Enhancer
+# SmartCV – AI-Powered Resume Analyzer
 
 SmartCV is an interactive web application that helps users **upgrade their resumes** effortlessly. Users can upload resumes in pdf format, and the application uses **Google Gemini** AI to analyze them, provide a score, and give actionable feedback to improve resumes based on the **job title and description**.
 
